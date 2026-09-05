@@ -1,0 +1,18 @@
+div{
+   width: 100px;
+   height: 100px;
+   margin: 25px;
+   padding: 25px;
+   display: inline-block;
+}
+#div1{
+   background-color:  blue;
+}
+#div2{
+   background-color: green;
+   /* display: none; */
+   visibility: hidden;
+}
+#div3{
+   background-color: rgba(255, 0,0,0.5);
+}

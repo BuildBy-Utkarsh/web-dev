@@ -60,6 +60,7 @@ web-dev/
 | 31 Aug 2026| Started CSS basics — colors, bg colors, how to link html with css and all   | Setup environment for better understanding |
 | 2 sept 2026| Studied about text aligners — text decoration,line height,font size,text-transform etc.| practice some all of them on vs code |
 | 3 sept 2026| Studied about box model — border, margin and padding etc.| practice some all of them on vs code and solve practice set 3|
+| 5 sept 2026| Studied about display , visibility and rgba — implemented it on css etc.| practice it ov vs and solve practice set 4|
 
 *(New entries added daily — this table doubles as a changelog of my growth.)*
 
