@@ -1,0 +1,19 @@
+#box1 {
+    height: 100px;
+    width: 100px;
+    background-color: green;
+    font-size: 10px;
+    font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
+    text-align: center;
+}
+
+#box2{
+    width: 30%;
+    background-color: yellow;
+    margin-left: 10%;
+    font-size: 2em;
+    width: 5rem;
+    height: 10vh;
+    text-align: center;
+}
