@@ -90,7 +90,7 @@ A running list of things I've built along the way:
 
 Feel free to follow along, drop suggestions, or connect!
 
-- GitHub: https://github.com/Utkarsh-Pratap-Singh633
+- GitHub: https://github.com/BuildBy-Utkarsh
 - Twitter/X: https://x.com/UtkarshSolves
 - LinkedIn: www.linkedin.com/in/utkarsh-pratap-singh-a297212a5
 
