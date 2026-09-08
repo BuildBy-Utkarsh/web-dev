@@ -6,3 +6,21 @@ div{
     display: inline-block;
     text-align: center;
 }
+#box1{
+        position: static;
+}
+#box2{
+    position: relative;
+    top: 20px;
+    left: 10px;
+}
+#box3{
+    position: sticky;
+    top: 0px;
+    left: 10px;
+}
+#box4{
+    position: fixed;
+    top: 0;
+    left: 10px;
+}
