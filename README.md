@@ -63,6 +63,7 @@ web-dev/
 | 5 sept 2026| Studied about display , visibility and rgba — implemented it on css etc.| practice it ov vs and solve practice set 4|
 | 6 sept 2026| Studied about relative , percentage  and position basics —  somme implemented it on css etc.| complete and practice it tomorrow|
 | 8 sept 2026| Studied about position , bg image and size  and and all the other things.| completed practice set 5  all done✅|
+| 10 sept 2026| Studied about flexbox , like display felx align item and many more.| completed practice set 6  all done✅|
 
 *(New entries added daily — this table doubles as a changelog of my growth.)*
 
