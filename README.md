@@ -19,7 +19,7 @@ The goal: build consistently, learn in public, and track how far I've come.
 
 ## 🛠️ Tech Stack (Learning Roadmap)
 
-- [ ] HTML5
+- [✅] HTML5  
 - [ ] CSS3 (Flexbox, Grid, Responsive Design)
 - [ ] JavaScript (ES6+)
 - [ ] Git & GitHub
@@ -64,6 +64,7 @@ web-dev/
 | 6 sept 2026| Studied about relative , percentage  and position basics —  somme implemented it on css etc.| complete and practice it tomorrow|
 | 8 sept 2026| Studied about position , bg image and size  and and all the other things.| completed practice set 5  all done✅|
 | 10 sept 2026| Studied about flexbox , like display felx align item and many more.| completed practice set 6  all done✅|
+| 25 sept 2026| Completed HTML and CSS with all the fundamental also make 10 projects using HTML and CSS |✅completed 10 projects all are live now|
 
 *(New entries added daily — this table doubles as a changelog of my growth.)*
 
@@ -75,7 +76,7 @@ A running list of things I've built along the way:
 
 | Project | Description | Status |
 |---------|-------------|--------|
-| https://first-html1.netlify.app/ | Deployed | Done ✅ |
+| https://portfolio-website-uttu.vercel.app/ | Deployed | Done ✅ |
 
 ---
 
