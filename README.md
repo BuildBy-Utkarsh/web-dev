@@ -19,16 +19,16 @@ The goal: build consistently, learn in public, and track how far I've come.
 
 ## 🛠️ Tech Stack (Learning Roadmap)
 
-- [✅] HTML5  
-- [ ] CSS3 (Flexbox, Grid, Responsive Design)
+- [ ] HTML5 ✅
+- [ ] CSS3 (Flexbox, Grid, Responsive Design) ✅
 - [ ] JavaScript (ES6+)
-- [ ] Git & GitHub
+- [ ] Git & GitHub ✅
 - [ ] React.js
 - [ ] Node.js
 - [ ] Express.js
 - [ ] MongoDB / SQL
 - [ ] REST APIs
-- [ ] Deployment (Vercel / Render / Netlify)
+- [ ] Deployment (Vercel / Render / Netlify) ✅
 
 *(I'll check these off as I go!)*
 
