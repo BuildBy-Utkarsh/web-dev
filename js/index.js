@@ -27,3 +27,16 @@ u();
 
 let arr = [1,2,3,4,5,6,4,4,6];
 console.log(typeof arr);
+
+
+let nums = [10,20,30,40];
+nums.push(90);
+nums[0] = 60;
+console.log(nums);
+
+let obj = {
+    name: "mohan",
+    age : 20
+}
+obj.name = "rohan";
+console.log(obj.name);
