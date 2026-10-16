@@ -41,3 +41,15 @@ console.log( typeof d);
 //boolean conversion
 
 console.log(Boolean("Hello Duniya"));
+
+// logical and
+let r = "rohit";
+let m = "mohit";
+let ans = (r&&m)
+console.log(ans)
+
+//logical OR
+
+let s  = 0;
+let t = 20;
+console.log(s || t);
