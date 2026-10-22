@@ -44,3 +44,41 @@ console.log(mini);
 const names = `rohit,mohit,gohiit,pohit,jai,shree,ram`
 
 console.log(names.split(","));
+
+
+const now = new Date();
+
+console.log(now);
+
+console.log(now.toString());
+
+console.log(now.toLocaleDateString());
+
+console.log(now.toLocaleString());
+
+
+console.log(now.getDate());
+console.log(now.getDay());
+console.log(now.getFullYear());
+console.log(now.getHours());
+console.log(now.getMilliseconds());
+console.log(now.getMinutes());
+console.log(now.getMonth());
+console.log(now.getSeconds());
+console.log(now.getTime());
+console.log(now.getTimezoneOffset());
+console.log(now.getUTCDate());
+console.log(now.getUTCFullYear());
+
+
+// days : mon - sunday(1-7 index  based)
+// months  : january (0 index based)
+
+// year month date hour min sec milisec
+
+const how = new Date(2026,9,22,22,16,56,125);
+console.log(how);
+
+
+const dates = Date.now();
+console.log(dates);
