@@ -21,7 +21,7 @@ The goal: build consistently, learn in public, and track how far I've come.
 
 - ✅ HTML5 
 - ✅ CSS3 (Flexbox, Grid, Responsive Design) 
-- [ ] JavaScript (ES6+)
+- ✅ JavaScript (ES6+)
 - ✅ Git & GitHub 
 - [ ] React.js
 - [ ] Node.js
