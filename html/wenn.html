@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f3f0e8" />
+  <title>7 Projects That Prove You Can Engineer Software</title>
+  <style>
+    :root{
+      --bg:#f3f0e8;
+      --paper:#fbfaf6;
+      --ink:#111318;
+      --muted:#6c6f76;
+      --line:#d8d4ca;
+      --blue:#2f63ff;
+      --orange:#ef6b3a;
+      --green:#1e8f5a;
+      --violet:#7b55e7;
+      --pink:#dd4f78;
+      --teal:#137d77;
+      --red:#c6513c;
+      --shadow:0 24px 60px rgba(25,29,37,.10);
+      --radius:26px;
+    }
+
+    *{box-sizing:border-box}
+    html{background:var(--bg);height:100%;overflow:hidden}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;overflow:hidden;height:100%;}
+    button,a{font:inherit}
+    a{color:inherit}
+    ::selection{background:#111318;color:#fff}
+
+    .progress{position:fixed;top:0;left:0;height:3px;background:var(--ink);z-index:90;width:0;transition:width .25s ease}
+    .nav{
+      position:fixed;top:22px;right:26px;z-index:80;display:flex;align-items:center;gap:10px;
+      background:rgba(251,250,246,.88);backdrop-filter:blur(14px);border:1px solid rgba(17,19,24,.10);
+      padding:9px 11px;border-radius:999px;box-shadow:0 10px 30px rgba(25,29,37,.08)
+    }
+    .nav-label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-right:5px;color:#44474f}
+    .dot{width:9px;height:9px;border-radius:50%;border:1px solid #999;background:transparent;cursor:pointer;padding:0;transition:.2s ease}
+    .dot.active{background:var(--ink);border-color:var(--ink);transform:scale(1.2)}
+
+    .slide{
+      position:absolute;inset:0;height:100vh;display:flex;align-items:center;overflow:hidden;
+      padding:72px clamp(28px,6vw,92px) 52px;opacity:0;pointer-events:none;
+      transform:translateX(44px) scale(.995);transition:opacity .34s ease,transform .42s cubic-bezier(.2,.75,.2,1);
+      visibility:hidden;
+    }
+    .slide.active{opacity:1;pointer-events:auto;transform:translateX(0) scale(1);visibility:visible;z-index:2}
+    .slide.exit-left{transform:translateX(-44px) scale(.995)}
+    .slide::after{content:"";position:absolute;inset:auto 0 0 0;height:1px;background:var(--line)}
+    .slide-inner{width:min(1460px,100%);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(440px,.92fr);gap:clamp(34px,5vw,80px);align-items:center}
+    .slide.outro .slide-inner,.slide.intro .slide-inner{grid-template-columns:minmax(0,1.05fr) minmax(420px,.9fr)}
+
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:#5f626a;margin-bottom:20px}
+    .eyebrow .mark{width:26px;height:2px;background:currentColor;border-radius:99px}
+    h1,h2{margin:0;letter-spacing:-.055em;line-height:.96;font-weight:760}
+    h1{font-size:clamp(54px,7.1vw,118px);max-width:1000px}
+    h2{font-size:clamp(50px,5.6vw,88px);max-width:880px}
+    .accent-word{color:var(--accent,var(--blue))}
+    .lede{font-size:clamp(18px,1.55vw,26px);line-height:1.38;letter-spacing:-.018em;max-width:760px;color:#363941;margin:24px 0 0}
+    .lede .hl,.problem .hl{color:var(--ink);font-weight:760;background:linear-gradient(transparent 68%,color-mix(in srgb,var(--accent,var(--blue)) 20%,transparent) 0);padding:0 .04em}
+    .problem{margin-top:28px;padding:15px 18px;border-left:3px solid var(--accent,var(--blue));background:rgba(255,255,255,.35);max-width:760px;font-size:15px;line-height:1.48;color:#4a4d54}
+    .problem strong{color:var(--ink)}
+    .chips{display:flex;gap:9px;flex-wrap:wrap;margin-top:28px}
+    .chip{padding:8px 11px;border:1px solid #cfcac0;border-radius:999px;background:rgba(255,255,255,.48);font-size:12px;font-weight:700;color:#40434a}
+    .actions{display:flex;gap:12px;align-items:center;margin-top:30px;flex-wrap:wrap}
+    .btn{border:0;background:var(--ink);color:white;border-radius:999px;padding:13px 18px;font-size:14px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:.2s ease}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(17,19,24,.16)}
+    .btn.secondary{background:transparent;color:var(--ink);border:1px solid #bbb7ae}
+    .btn .arrow{transition:transform .2s ease}.btn:hover .arrow{transform:translateX(3px)}
+    .slide-no{position:absolute;bottom:30px;left:clamp(28px,6vw,92px);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#858079}
+
+    .visual{position:relative;min-height:560px;display:flex;align-items:center;justify-content:center}
+    .visual::before{content:"";position:absolute;width:440px;height:440px;border:1px dashed color-mix(in srgb,var(--accent) 32%,#bbb);border-radius:50%;opacity:.55;animation:slowspin 30s linear infinite}
+    @keyframes slowspin{to{transform:rotate(360deg)}}
+    .device{width:min(590px,100%);background:var(--paper);border:1px solid rgba(17,19,24,.12);border-radius:28px;box-shadow:var(--shadow);overflow:hidden;position:relative;z-index:2;transform:rotate(-1.2deg);transition:.35s ease}
+    .device:hover{transform:rotate(0) translateY(-5px)}
+    .device-top{height:48px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 17px;gap:7px;background:#f7f4ed}
+    .traffic{width:8px;height:8px;border:1px solid #87837b;border-radius:50%}
+    .device-title{margin-left:10px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#696c73}
+    .device-body{padding:18px;min-height:430px}
+
+    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .mini-card{border:1px solid var(--line);background:white;border-radius:16px;padding:15px;min-height:104px;position:relative;overflow:hidden}
+    .mini-card .k{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:#777b82;font-weight:800}
+    .mini-card .v{font-size:20px;letter-spacing:-.035em;font-weight:760;margin-top:8px}
+    .mini-card .sub{font-size:12px;line-height:1.4;color:#777b82;margin-top:6px}
+    .mini-card.accent{background:var(--accent);color:white;border-color:var(--accent)}
+    .mini-card.accent .k,.mini-card.accent .sub{color:rgba(255,255,255,.78)}
+
+    .timeline{display:grid;grid-template-columns:82px 1fr;gap:8px;margin-top:12px}
+    .track-name{font-size:10px;color:#777b82;font-weight:800;padding-top:8px}
+    .track{height:36px;border-radius:8px;background:#ede9df;position:relative;overflow:hidden}
+    .clip{position:absolute;top:5px;bottom:5px;border-radius:6px;background:var(--accent);opacity:.9}
+    .playhead{position:absolute;top:0;bottom:0;width:2px;background:#111318;left:57%;z-index:3}
+    .playhead:before{content:"";width:8px;height:8px;background:#111318;position:absolute;top:-3px;left:-3px;transform:rotate(45deg)}
+
+    .board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+    .col{border:1px solid var(--line);border-radius:14px;background:#f8f6ef;padding:10px;min-height:230px}
+    .col-title{font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:#71747a;margin-bottom:9px}
+    .task{background:white;border:1px solid #ddd8cd;border-radius:10px;padding:9px;margin-bottom:8px;font-size:11px;line-height:1.25}
+    .task .tag{display:inline-block;width:32px;height:4px;border-radius:99px;background:var(--accent);margin-bottom:7px}
+
+    .code{background:#14161a;color:#f4f4f4;border-radius:15px;padding:14px;font-family:SFMono-Regular,Consolas,monospace;font-size:11px;line-height:1.55;margin-top:12px;min-height:155px;position:relative;overflow:hidden}
+    .code .dim{color:#777f8c}.code .hi{color:#9bc3ff}.code .ok{color:#a7e6bd}.code .warn{color:#ffc892}
+    .terminal{margin-top:10px;background:#efede6;border-radius:12px;padding:11px;font-family:SFMono-Regular,Consolas,monospace;font-size:10px;color:#50535a}
+
+    .canvas{height:360px;border:1px solid var(--line);border-radius:18px;background-color:white;background-image:radial-gradient(#d9d6cf 1px,transparent 1px);background-size:18px 18px;position:relative;overflow:hidden}
+    .node{position:absolute;background:#fff;border:1px solid #bbb8af;border-radius:12px;padding:11px 13px;box-shadow:0 8px 20px rgba(17,19,24,.07);font-size:11px;font-weight:800}
+    .node.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .line-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+    .cursor{position:absolute;width:12px;height:18px;background:var(--accent);clip-path:polygon(0 0,100% 55%,55% 64%,42% 100%,30% 70%,0 78%);filter:drop-shadow(0 2px 2px rgba(0,0,0,.14))}
+    .cursor-label{position:absolute;background:var(--accent);color:white;font-size:9px;font-weight:800;padding:4px 6px;border-radius:5px;white-space:nowrap}
+
+    .ledger{border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:12px;background:#fff}
+    .ledger-row{display:grid;grid-template-columns:1.35fr .8fr .8fr .8fr;gap:8px;padding:11px 12px;border-bottom:1px solid #ece8df;font-size:10px;align-items:center}.ledger-row:last-child{border-bottom:0}
+    .ledger-head{font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#797c82;background:#f7f4ed}
+    .risk{margin-top:12px;border:1px solid color-mix(in srgb,var(--accent) 45%,#ddd);border-radius:16px;padding:14px;background:color-mix(in srgb,var(--accent) 6%,#fff)}
+    .risk-top{display:flex;justify-content:space-between;gap:16px;align-items:center}.risk-score{font-size:30px;font-weight:800;letter-spacing:-.05em;color:var(--accent)}
+    .risk ul{margin:10px 0 0;padding-left:17px;font-size:11px;color:#64676e;line-height:1.6}
+
+    .stream{display:flex;gap:8px;align-items:center;margin:18px 0 10px}.stream .box{flex:1;min-height:66px;border:1px solid var(--line);border-radius:13px;background:#fff;padding:10px;text-align:center;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}.stream .arr{color:#8b8c90;font-weight:800}
+    .video-player{aspect-ratio:16/9;border-radius:16px;background:#17191e;color:#fff;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .video-player .play{width:44px;height:44px;border-radius:50%;border:1px solid #fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+    .caption-box{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.78);padding:6px 9px;border-radius:6px;font-size:9px;white-space:nowrap}
+    .watermark{position:absolute;top:15px;right:15px;font-size:8px;color:rgba(255,255,255,.45);transform:rotate(-8deg)}
+
+    .map{height:360px;border-radius:18px;background:#e9ece8;position:relative;overflow:hidden;border:1px solid #d2d7d1}
+    .road{position:absolute;background:#fff;border:1px solid #ddd;border-radius:99px}.road.r1{width:540px;height:38px;left:-60px;top:130px;transform:rotate(18deg)}.road.r2{width:430px;height:32px;left:90px;top:245px;transform:rotate(-24deg)}.road.r3{width:33px;height:430px;left:260px;top:-55px;transform:rotate(6deg)}
+    .pin{position:absolute;width:16px;height:16px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#30343a;border:2px solid #fff;box-shadow:0 4px 9px rgba(0,0,0,.15)}.pin:after{content:"";position:absolute;width:4px;height:4px;background:#fff;border-radius:50%;left:4px;top:4px}.pin.hot{background:var(--accent)}
+    .dispatch-card{position:absolute;left:14px;right:14px;bottom:14px;background:rgba(251,250,246,.94);backdrop-filter:blur(8px);border:1px solid rgba(17,19,24,.1);border-radius:14px;padding:12px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}.dispatch-card .title{font-size:11px;font-weight:800}.dispatch-card .meta{font-size:9px;color:#777;margin-top:4px}.pill{font-size:9px;font-weight:800;padding:6px 8px;background:var(--accent);color:white;border-radius:999px}
+
+    .intro-visual{position:relative;min-height:590px}
+    .stack-card{position:absolute;width:260px;height:175px;border-radius:22px;background:var(--paper);border:1px solid rgba(17,19,24,.12);box-shadow:0 18px 40px rgba(17,19,24,.11);padding:18px;transition:.25s ease}
+    .stack-card:hover{transform:translateY(-7px) rotate(0deg)!important}
+    .stack-card:nth-child(1){top:30px;left:80px;transform:rotate(-8deg)}
+    .stack-card:nth-child(2){top:165px;left:270px;transform:rotate(7deg)}
+    .stack-card:nth-child(3){top:325px;left:55px;transform:rotate(-3deg)}
+    .stack-card .num{font-size:10px;font-weight:900;letter-spacing:.1em;color:#777;text-transform:uppercase}
+    .stack-card .title{font-size:25px;font-weight:800;letter-spacing:-.05em;line-height:1.03;margin-top:42px}
+    .stack-card .accent-line{position:absolute;bottom:18px;left:18px;width:55px;height:6px;border-radius:99px;background:var(--c)}
+    .rule-card{position:absolute;right:-10px;bottom:18px;width:260px;background:#111318;color:#fff;border-radius:22px;padding:20px;box-shadow:0 18px 40px rgba(17,19,24,.16)}
+    .rule-card .small{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#aaa;font-weight:800}.rule-card p{font-size:20px;line-height:1.18;letter-spacing:-.03em;margin:12px 0 0}
+
+    .outro-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:26px;max-width:780px}.outro-item{padding:14px;border:1px solid var(--line);background:rgba(255,255,255,.38);border-radius:14px;font-size:13px;font-weight:760}.outro-item span{color:var(--muted);font-weight:600}
+
+    .drawer-backdrop{position:fixed;inset:0;background:rgba(12,13,16,.28);z-index:100;opacity:0;pointer-events:none;transition:.22s ease}
+    .drawer{position:fixed;top:0;right:0;width:min(700px,96vw);height:100vh;background:#fcfbf7;z-index:110;transform:translateX(102%);transition:.3s cubic-bezier(.2,.8,.2,1);box-shadow:-25px 0 70px rgba(15,18,22,.18);overflow:auto;padding:34px 38px 48px}
+    .drawer.open{transform:translateX(0)}.drawer-backdrop.open{opacity:1;pointer-events:auto}
+    .drawer-close{position:sticky;top:0;margin-left:auto;border:1px solid #d1ccc1;background:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:2}
+    .drawer .num{font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-top:18px}.drawer h3{font-size:46px;letter-spacing:-.05em;line-height:1;margin:10px 0 12px}.drawer .summary{font-size:19px;color:#50545c;line-height:1.52}.detail-section{padding:26px 0;border-top:1px solid var(--line)}.detail-section:first-of-type{margin-top:28px}.detail-section h4{font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 14px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.detail-box{background:#f4f1e9;border:1px solid #e2ddd1;border-radius:14px;padding:15px;font-size:14px;line-height:1.5}.detail-list{margin:0;padding-left:20px;color:#50545c;font-size:16px;line-height:1.72}.stackline{display:flex;gap:8px;flex-wrap:wrap}.stackline span{font-size:13px;font-weight:800;border:1px solid #d2cec4;background:white;padding:8px 10px;border-radius:999px}.resume-line{font-size:17px;line-height:1.58;background:#15171b;color:#f6f6f6;padding:18px;border-radius:15px}.benchmark{display:grid;grid-template-columns:1fr 1fr;gap:10px}.bench{border:1px solid #ddd8cd;border-radius:14px;padding:15px;background:white}.bench strong{display:block;font-size:24px;letter-spacing:-.04em}.bench span{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.07em;font-weight:800;line-height:1.35}
+
+
+    .slide-controls{position:fixed;right:26px;bottom:24px;z-index:75;display:flex;gap:9px}
+    .slide-arrow{width:46px;height:46px;border-radius:50%;border:1px solid rgba(17,19,24,.15);background:rgba(251,250,246,.92);backdrop-filter:blur(12px);color:var(--ink);font-size:19px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 28px rgba(25,29,37,.08);transition:.2s ease}
+    .slide-arrow:hover{transform:translateY(-2px);background:#fff;box-shadow:0 13px 34px rgba(25,29,37,.12)}
+    .slide-arrow:disabled{opacity:.3;cursor:default;transform:none;box-shadow:none}
+    .hint{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:70;background:rgba(251,250,246,.86);border:1px solid rgba(17,19,24,.1);padding:8px 11px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#777;backdrop-filter:blur(10px)}
+    .kbd{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;border:1px solid #bbb7ae;border-bottom-width:2px;border-radius:5px;margin:0 2px;color:#4d5057;background:#fff}
+
+    @media (max-width:980px){
+      html{overflow:hidden}.slide{padding-top:90px;overflow-y:auto;align-items:flex-start}.slide-inner,.slide.intro .slide-inner,.slide.outro .slide-inner{grid-template-columns:1fr}.visual,.intro-visual{min-height:470px}.nav{right:14px;top:14px}.hint{display:none}.slide-no{position:static;margin-top:30px}.intro-visual{max-width:620px;width:100%;margin:0 auto}.visual{max-width:650px;width:100%;margin:0 auto}.drawer{padding:24px}.outro-list{grid-template-columns:1fr}}
+    @media (max-width:620px){
+      .slide{padding-left:20px;padding-right:20px}.slide-inner{gap:28px}.nav-label{display:none}.dot{width:8px;height:8px}.nav{gap:7px;padding:9px}.problem{font-size:14px}.visual{min-height:380px}.device-body{padding:12px}.mini-grid{grid-template-columns:1fr}.board{grid-template-columns:1fr 1fr}.board .col:nth-child(3){display:none}.intro-visual{min-height:520px}.stack-card{width:220px}.stack-card:nth-child(1){left:0}.stack-card:nth-child(2){left:130px}.stack-card:nth-child(3){left:10px}.rule-card{right:0;width:230px}.drawer h3{font-size:36px}.drawer .summary{font-size:17px}.detail-grid,.benchmark{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <div class="nav" id="nav"><span class="nav-label">Projects</span></div>
+  <div class="hint"><span class="kbd">←</span><span class="kbd">→</span> switch slides &nbsp; • &nbsp; click <b>View blueprint</b> for details</div>
+  <div class="slide-controls" aria-label="Slide navigation">
+    <button class="slide-arrow" id="prevSlide" aria-label="Previous slide">←</button>
+    <button class="slide-arrow" id="nextSlide" aria-label="Next slide">→</button>
+  </div>
+
+  <!-- 00 INTRO -->
+  <section class="slide intro active" id="intro" style="--accent:var(--blue)">
+    <div class="slide-inner">
+      <div>
+        <div class="eyebrow"><span class="mark"></span> 2026–27 engineering portfolio</div>
+        <h1>7 projects that prove you can <span class="accent-word">engineer</span> software.</h1>
+        <p class="lede">Seven projects that go beyond CRUD. Each one solves a <span class="hl">real product problem</span>, has serious engineering underneath, and uses AI only where it makes the product better.</p>
+        <div class="problem"><strong>One simple test:</strong> if you remove the buzzwords, would someone still want to use it? If yes, then add the <span class="hl">engineering depth</span>.</div>
+        <div class="chips"><span class="chip">AI-native</span><span class="chip">Production thinking</span><span class="chip">System design</span><span class="chip">Measurable scale</span><span class="chip">Resume-ready</span></div>
+      </div>
+      <div class="intro-visual" aria-hidden="true">
+        <div class="stack-card" style="--c:var(--pink)"><div class="num">01 · Create</div><div class="title">AI Video<br/>Studio</div><div class="accent-line"></div></div>
+        <div class="stack-card" style="--c:var(--violet)"><div class="num">02 · Operate</div><div class="title">AI Work<br/>OS</div><div class="accent-line"></div></div>
+        <div class="stack-card" style="--c:var(--green)"><div class="num">05 · Trust</div><div class="title">Financial<br/>Infrastructure</div><div class="accent-line"></div></div>
+        <div class="rule-card"><div class="small">The interview test</div><p>Can you explain the hardest tradeoff you made without opening your code?</p></div>
+      </div>
+    </div>
+    <div class="slide-no">00 / Intro</div>
+  </section>
+
+  <!-- 01 AI VIDEO -->
+  <section class="slide project" id="video-ai" style="--accent:var(--pink)" data-project="0">
+    <div class="slide-inner">
+      <div>
+        <div class="eyebrow"><span class="mark"></span> Project 01 · AI + multimedia</div>
+        <h2>AI-native video <span class="accent-word">creation & editing</span> platform.</h2>
+        <p class="lede">Upload hours of raw footage and say, <span class="hl">“make this into an 8-minute YouTube video.”</span> The product finds the useful parts, builds the edit, and puts everything on a timeline you can still control.</p>
+        <div class="problem"><strong>What makes it hard:</strong> the AI is not just generating a video. It has to <span class="hl">edit a real timeline</span> that can be changed, undone and rendered again.</div>
+        <div class="chips"><span class="chip">Multimodal AI</span><span class="chip">FFmpeg</span><span class="chip">Background workers</span><span class="chip">Timeline editor</span></div>
+        <div class="actions"><button class="btn" onclick="openDrawer(0)">View blueprint <span class="arrow">→</span></button></div>
+      </div>
+      <div class="visual">
+        <div class="device">
+          <div class="device-top"><i class="traffic"></i><i class="traffic"></i><i class="traffic"></i><span class="device-title">Creator Studio · Agent Edit</span></div>
+          <div class="device-body">
+            <div class="mini-grid">
+              <div class="mini-card accent"><div class="k">Instruction</div><div class="v">“Make the hook faster.”</div><div class="sub">Agent is restructuring the first 00:15.</div></div>
+              <div class="mini-card"><div class="k">Raw footage</div><div class="v">03:12:48</div><div class="sub">742 scenes · 2 speakers · transcript indexed</div></div>
+            </div>
+            <div class="timeline"><div class="track-name">VIDEO</div><div class="track"><i class="clip" style="left:3%;width:22%"></i><i class="clip" style="left:28%;width:15%;opacity:.6"></i><i class="clip" style="left:46%;width:25%"></i><i class="clip" style="left:75%;width:17%;opacity:.75"></i><i class="playhead"></i></div></div>
+            <div class="timeline"><div class="track-name">B-ROLL</div><div class="track"><i class="clip" style="left:17%;width:12%;opacity:.45"></i><i class="clip" style="left:52%;width:20%;opacity:.45"></i></div></div>
+            <div class="timeline"><div class="track-name">AUDIO</div><div class="track"><i class="clip" style="left:2%;width:92%;opacity:.35"></i></div></div>
+            <div class="timeline"><div class="track-name">CAPTION</div><div class="track"><i class="clip" style="left:2%;width:13%;opacity:.7"></i><i class="clip" style="left:17%;width:18%;opacity:.7"></i><i class="clip" style="left:37%;width:16%;opacity:.7"></i><i class="clip" style="left:55%;width:20%;opacity:.7"></i></div></div>
+            <div class="mini-card" style="margin-top:13px;min-height:80px"><div class="k">Agent plan</div><div class="sub" style="font-size:12px;color:#45484f">Remove repeated take → add architecture B-roll → normalize dialogue → tighten pauses → create 3 Shorts after final render.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-no">01 / Create</div>
+  </section>
+
+  <!-- 02 WORK OS -->
+  <section class="slide project" id="work-os" style="--accent:var(--violet)" data-project="1">
+    <div class="slide-inner">
+      <div>
+        <div class="eyebrow"><span class="mark"></span> Project 02 · AI + SaaS</div>
+        <h2>An AI <span class="accent-word">operating system</span> for teams.</h2>
+        <p class="lede">Think Jira or Lark, but the workspace can actually <span class="hl">understand what the team is doing</span>. Meetings, tasks, docs and chats all become context it can work with.</p>
+        <div class="problem"><strong>The real idea:</strong> give it a messy launch brief. It should build the plan, spot blockers, and tell the team <span class="hl">what is slipping and why</span>.</div>
+        <div class="chips"><span class="chip">Multi-tenant SaaS</span><span class="chip">Agents</span><span class="chip">Workspace RAG</span><span class="chip">Event graph</span></div>
+        <div class="actions"><button class="btn" onclick="openDrawer(1)">View blueprint <span class="arrow">→</span></button></div>
+      </div>
+      <div class="visual">
+        <div class="device">
+          <div class="device-top"><i class="traffic"></i><i class="traffic"></i><i class="traffic"></i><span class="device-title">Launch · Project intelligence</span></div>
+          <div class="device-body">
+            <div class="mini-grid">
+              <div class="mini-card"><div class="k">Launch health</div><div class="v">At risk</div><div class="sub">Backend delay affects 3 dependent tasks.</div></div>
+              <div class="mini-card accent"><div class="k">AI brief</div><div class="v">68%</div><div class="sub">“Auth is the critical path this week.”</div></div>
+            </div>
+            <div class="board">
+              <div class="col"><div class="col-title">Product</div><div class="task"><i class="tag"></i><br/>Acceptance criteria</div><div class="task"><i class="tag"></i><br/>Mobile onboarding</div></div>
+              <div class="col"><div class="col-title">Engineering</div><div class="task"><i class="tag"></i><br/>Auth service <b>BLOCKED</b></div><div class="task"><i class="tag"></i><br/>Payments API</div><div class="task"><i class="tag"></i><br/>App integration</div></div>
+              <div class="col"><div class="col-title">Marketing</div><div class="task"><i class="tag"></i><br/>Landing page</div><div class="task"><i class="tag"></i><br/>Launch creatives</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-no">02 / Operate</div>
+  </section>
+
+  <!-- 03 HIRING -->
+  <section class="slide project" id="hiring" style="--accent:var(--blue)" data-project="2">
+    <div class="slide-inner">
+      <div>
+        <div class="eyebrow"><span class="mark"></span> Project 03 · compute + hiring</div>
+        <h2>AI-powered technical <span class="accent-word">hiring infrastructure.</span></h2>
+        <p class="lede">Build the platform a company could actually use to hire developers: <span class="hl">live coding, debugging, secure code execution</span>, and an AI copilot for the interviewer.</p>
+        <div class="problem"><strong>What makes it hard:</strong> strangers are running code on your infrastructure. You need <span class="hl">isolation, queues and live collaboration</span> without letting AI decide who gets hired.</div>
+        <div class="chips"><span class="chip">Docker sandbox</span><span class="chip">Queues</span><span class="chip">Live editor</span><span class="chip">AI interviewer copilot</span></div>
+        <div class="actions"><button class="btn" onclick="openDrawer(2)">View blueprint <span class="arrow">→</span></button></div>
+      </div>
+      <div class="visual">
+        <div class="device">
+          <div class="device-top"><i class="traffic"></i><i class="traffic"></i><i class="traffic"></i><span class="device-title">Interview room · Candidate 042</span></div>
+          <div class="device-body">
+            <div class="mini-grid">
+              <div class="mini-card accent"><div class="k">Sandbox</div><div class="v">Isolated</div><div class="sub">CPU 38% · RAM 184MB · 2.1s remaining</div></div>
+              <div class="mini-card"><div class="k">Interviewer copilot</div><div class="v">Next prompt ready</div><div class="sub">Increase difficulty: React stale closure debugging.</div></div>
+            </div>
+            <div class="code"><span class="dim">// candidate.ts</span><br/><span class="hi">function</span> findDuplicate(nums) {<br/>&nbsp;&nbsp;<span class="hi">const</span> seen = <span class="hi">new</span> Set();<br/>&nbsp;&nbsp;<span class="hi">for</span> (<span class="hi">const</span> n <span class="hi">of</span> nums) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hi">if</span> (seen.has(n)) <span class="ok">return n;</span><br/>&nbsp;&nbsp;&nbsp;&nbsp;seen.add(n);<br/>&nbsp;&nbsp;}<br/>}</div>
+            <div class="terminal">✓ 11/12 tests passed &nbsp; <span style="color:var(--accent)">● hidden case failed</span> &nbsp; execution 184ms</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-no">03 / Evaluate</div>
+  </section>
+
+  <!-- 04 COLLAB -->
+  <section class="slide project" id="collab" style="--accent:var(--orange)" data-project="3">
+    <div class="slide-inner">
+      <div>
+        <div class="eyebrow"><span class="mark"></span> Project 04 · realtime systems</div>
+        <h2>AI collaborative <span class="accent-word">creation platform.</span></h2>
+        <p class="lede">A multiplayer canvas for docs, diagrams and brainstorming. People can go offline, keep working, come back later, and <span class="hl">everyone still ends up on the same version</span>.</p>
+        <div class="problem"><strong>The killer demo:</strong> disconnect one of three editors, keep changing the same canvas, reconnect it, then ask AI to <span class="hl">turn the final chaos into a roadmap</span>.</div>
+        <div class="chips"><span class="chip">CRDTs</span><span class="chip">WebSockets</span><span class="chip">Offline sync</span><span class="chip">Spatial AI</span></div>
+        <div class="actions"><button class="btn" onclick="openDrawer(3)">View blueprint <span class="arrow">→</span></button></div>
+      </div>
+      <div class="visual">
+        <div class="device">
+          <div class="device-top"><i class="traffic"></i><i class="traffic"></i><i class="traffic"></i><span class="device-title">Architecture canvas · 4 collaborators</span></div>
+          <div class="device-body">
+            <div class="canvas">
+              <svg class="line-svg" viewBox="0 0 500 360" preserveAspectRatio="none"><path d="M120 85 C190 85, 190 155, 250 155" stroke="#b7b3ab" stroke-width="2" fill="none"/><path d="M320 160 C390 170, 390 250, 405 265" stroke="#b7b3ab" stroke-width="2" fill="none"/><path d="M240 190 C210 240, 180 250, 150 275" stroke="#b7b3ab" stroke-width="2" fill="none"/></svg>
+              <div class="node primary" style="left:38px;top:58px">Client</div>
+              <div class="node" style="left:205px;top:132px">API Gateway</div>
+              <div class="node" style="left:95px;top:256px">Event Stream</div>
+              <div class="node" style="right:32px;top:244px">Database</div>
+              <div class="cursor" style="left:335px;top:70px"></div><div class="cursor-label" style="left:347px;top:82px">Sarthak</div>
+              <div class="cursor" style="left:145px;top:192px;background:#2f63ff"></div><div class="cursor-label" style="left:157px;top:204px;background:#2f63ff">Rahul</div>
+            </div>
+            <div class="mini-card accent" style="margin-top:12px;min-height:auto"><div class="k">AI command</div><div class="sub" style="font-size:12px">“Turn these architecture notes into a 6-week implementation roadmap.”</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-no">04 / Collaborate</div>
+  </section>
+
+  <!-- 05 FINTECH -->
+  <section class="slide project" id="finance" style="--accent:var(--green)" data-project="4">
+    <div class="slide-inner">
+      <div>
+        <div class="eyebrow"><span class="mark"></span> Project 05 · fintech + correctness</div>
+        <h2>Financial infrastructure + <span class="accent-word">AI risk engine.</span></h2>
+        <p class="lede">Don't build another wallet UI. Build the part that makes money movement <span class="hl">correct, traceable and safe</span>: ledger, retries, refunds, reconciliation and fraud signals.</p>
+        <div class="problem"><strong>One strict rule:</strong> AI can flag fraud. It cannot decide where the money went. <span class="hl">Ledger correctness stays deterministic.</span></div>
+        <div class="chips"><span class="chip">Double-entry ledger</span><span class="chip">Idempotency</span><span class="chip">Reconciliation</span><span class="chip">Fraud scoring</span></div>
+        <div class="actions"><button class="btn" onclick="openDrawer(4)">View blueprint <span class="arrow">→</span></button></div>
+      </div>
+      <div class="visual">
+        <div class="device">
+          <div class="device-top"><i class="traffic"></i><i class="traffic"></i><i class="traffic"></i><span class="device-title">Ledger · Reconciliation center</span></div>
+          <div class="device-body">
+            <div class="mini-grid">
+              <div class="mini-card"><div class="k">Ledger state</div><div class="v">Balanced</div><div class="sub">Debits = Credits · audit sequence #88422</div></div>
+              <div class="mini-card accent"><div class="k">Risk queue</div><div class="v">17 flagged</div><div class="sub">3 require manual review.</div></div>
+            </div>
+            <div class="ledger">
+              <div class="ledger-row ledger-head"><span>Transaction</span><span>Debit</span><span>Credit</span><span>Status</span></div>
+              <div class="ledger-row"><span>#TX-88422</span><span>₹10,000</span><span>₹10,000</span><span>SETTLED</span></div>
+              <div class="ledger-row"><span>#TX-88423</span><span>₹2,450</span><span>₹2,450</span><span>PENDING</span></div>
+              <div class="ledger-row"><span>#TX-88424</span><span>₹78,000</span><span>₹78,000</span><span>REVIEW</span></div>
+            </div>
+            <div class="risk"><div class="risk-top"><div><div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#73767b">AI risk assessment</div><div style="font-size:13px;font-weight:800;margin-top:5px">Transaction #88424</div></div><div class="risk-score">87</div></div><ul><li>New device + unusual amount</li><li>Velocity spike in last 7 minutes</li><li>Location differs from account pattern</li></ul></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-no">05 / Trust</div>
+  </section>
+
+  <!-- 06 VIDEO INFRA -->
+  <section class="slide project" id="video-infra" style="--accent:var(--teal)" data-project="5">
+    <div class="slide-inner">
+      <div>
+        <div class="eyebrow"><span class="mark"></span> Project 06 · streaming + security</div>
+        <h2>Secure intelligent <span class="accent-word">video infrastructure.</span></h2>
+        <p class="lede">Think VdoCipher or Mux, not YouTube. Upload a large premium video once, then handle <span class="hl">processing, secure playback, adaptive streaming</span> and AI search across the content.</p>
+        <div class="problem"><strong>The real project:</strong> the player is the easy part. The hard part is everything before it: <span class="hl">upload → transcode → protect → deliver → understand</span>.</div>
+        <div class="chips"><span class="chip">HLS/DASH</span><span class="chip">FFmpeg workers</span><span class="chip">Signed playback</span><span class="chip">Video RAG</span></div>
+        <div class="actions"><button class="btn" onclick="openDrawer(5)">View blueprint <span class="arrow">→</span></button></div>
+      </div>
+      <div class="visual">
+        <div class="device">
+          <div class="device-top"><i class="traffic"></i><i class="traffic"></i><i class="traffic"></i><span class="device-title">Video infrastructure · Asset 117</span></div>
+          <div class="device-body">
+            <div class="video-player"><div class="play">▶</div><div class="watermark">viewer_8932 · 2026-10-15</div><div class="caption-box">Closures preserve access to the lexical environment…</div></div>
+            <div class="stream"><div class="box">Upload</div><span class="arr">→</span><div class="box">Transcode</div><span class="arr">→</span><div class="box">Encrypt</div><span class="arr">→</span><div class="box">CDN</div></div>
+            <div class="mini-grid">
+              <div class="mini-card accent"><div class="k">AI search</div><div class="v">01:17:34</div><div class="sub">“Where does the instructor explain closures?”</div></div>
+              <div class="mini-card"><div class="k">Playback security</div><div class="v">Protected</div><div class="sub">Signed token · watermark · 1 active device</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-no">06 / Stream</div>
+  </section>
+
+  <!-- 07 DISPATCH -->
+  <section class="slide project" id="dispatch" style="--accent:var(--red)" data-project="6">
+    <div class="slide-inner">
+      <div>
+        <div class="eyebrow"><span class="mark"></span> Project 07 · realtime optimization</div>
+        <h2>AI real-time <span class="accent-word">dispatch & operations</span> engine.</h2>
+        <p class="lede">Thousands of drivers, ambulances or field agents are moving at once. A new request arrives. Your system has to decide <span class="hl">who should take it right now</span>.</p>
+        <div class="problem"><strong>The catch:</strong> nearest is not always best. A good dispatch engine also looks at <span class="hl">traffic, capacity, stale GPS, priority and predicted demand</span>.</div>
+        <div class="chips"><span class="chip">Geospatial queries</span><span class="chip">Live location</span><span class="chip">Optimization</span><span class="chip">Demand prediction</span></div>
+        <div class="actions"><button class="btn" onclick="openDrawer(6)">View blueprint <span class="arrow">→</span></button></div>
+      </div>
+      <div class="visual">
+        <div class="device">
+          <div class="device-top"><i class="traffic"></i><i class="traffic"></i><i class="traffic"></i><span class="device-title">Dispatch control · Zone Bhopal-07</span></div>
+          <div class="device-body">
+            <div class="map">
+              <div class="road r1"></div><div class="road r2"></div><div class="road r3"></div>
+              <div class="pin hot" style="left:110px;top:92px"></div><div class="pin" style="left:220px;top:188px"></div><div class="pin" style="left:330px;top:112px"></div><div class="pin" style="left:385px;top:226px"></div><div class="pin hot" style="left:185px;top:266px"></div>
+              <div class="dispatch-card"><div><div class="title">Recommended: Unit A-17</div><div class="meta">ETA 4m 18s · capability match 98% · fresh GPS 6s ago</div></div><div class="pill">DISPATCH</div></div>
+            </div>
+            <div class="mini-grid" style="margin-top:12px"><div class="mini-card accent"><div class="k">Demand forecast</div><div class="v">+34%</div><div class="sub">Expected spike in Zone 07 within 20 min.</div></div><div class="mini-card"><div class="k">Live fleet</div><div class="v">10,248</div><div class="sub">8,931 available · median update 4.2s</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-no">07 / Optimize</div>
+  </section>
+
+  <!-- OUTRO -->
+  <section class="slide outro" id="outro" style="--accent:var(--blue)">
+    <div class="slide-inner">
+      <div>
+        <div class="eyebrow"><span class="mark"></span> The actual takeaway</div>
+        <h2>Don't build <span class="accent-word">more.</span><br/>Build deeper.</h2>
+        <p class="lede">One deeply built project can give you more to talk about in an interview than ten clones. Show the <span class="hl">decisions, failures, benchmarks and tradeoffs</span>, not just screenshots.</p>
+        <div class="outro-list">
+          <div class="outro-item">Architecture diagram<br/><span>Explain data flow and failure paths.</span></div>
+          <div class="outro-item">Real benchmarks<br/><span>Measure latency, throughput and limits.</span></div>
+          <div class="outro-item">Tradeoff notes<br/><span>Why this database? Why this queue?</span></div>
+          <div class="outro-item">Failure demo<br/><span>Show what happens when things break.</span></div>
+          <div class="outro-item">Security decisions<br/><span>RBAC, validation, secrets, isolation.</span></div>
+          <div class="outro-item">Readable README<br/><span>Make the project easy to evaluate.</span></div>
+        </div>
+      </div>
+      <div class="intro-visual" aria-hidden="true">
+        <div class="stack-card" style="--c:var(--pink);top:42px;left:30px;transform:rotate(-5deg)"><div class="num">Product</div><div class="title">Worth<br/>using.</div><div class="accent-line"></div></div>
+        <div class="stack-card" style="--c:var(--blue);top:190px;left:230px;transform:rotate(6deg)"><div class="num">Engineering</div><div class="title">Worth<br/>discussing.</div><div class="accent-line"></div></div>
+        <div class="stack-card" style="--c:var(--green);top:345px;left:45px;transform:rotate(-2deg)"><div class="num">Evidence</div><div class="title">Worth<br/>believing.</div><div class="accent-line"></div></div>
+        <div class="rule-card"><div class="small">Resume rule</div><p>Never claim scale you did not test.</p></div>
+      </div>
+    </div>
+    <div class="slide-no">08 / Outro</div>
+  </section>
+
+  <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeDrawer()"></div>
+  <aside class="drawer" id="drawer" aria-live="polite">
+    <button class="drawer-close" onclick="closeDrawer()" aria-label="Close">×</button>
+    <div id="drawerContent"></div>
+  </aside>
+
+  <script>
+    const projects = [
+      {
+        n:'Project 01', title:'AI-native Video Creation & Editing Platform', accent:'#dd4f78',
+        summary:'A video editor where the user can describe the edit in plain English, but the result is still a real, editable timeline instead of a black-box generated MP4.',
+        build:['Resumable raw-media upload','Transcript + scene + speaker indexing','Editable multi-track timeline','AI edit planner that emits timeline operations','B-roll / image / generative media insertion','Caption, audio cleanup and music layers','Version history + undo for agent actions','Asynchronous render and export pipeline'],
+        ai:['Multimodal footage understanding','Prompt → edit-plan → timeline operations','Automatic chapter / hook / highlight discovery','Short-form extraction from long-form video','Reference-style analysis without copying assets'],
+        stack:['React','TypeScript','Node.js','MongoDB','Redis','BullMQ','FFmpeg','S3/Object Storage','WebSockets','LLM + vision APIs'],
+        metrics:[['500+','timeline operations without blocking UI'],['3 hrs','raw footage indexed asynchronously'],['N workers','horizontal render scaling'],['p95','track render & queue latency']],
+        demo:'Upload a long raw recording. Ask the agent to tighten the first 15 seconds, remove repeated takes, add B-roll and generate three Shorts. Show the timeline changing before the final render.',
+        resume:'Built an AI-native video editing platform that converts natural-language edit instructions into non-destructive timeline operations, with multimodal indexing, background FFmpeg workers and resumable object-storage uploads.'
+      },
+      {
+        n:'Project 02', title:'AI Operating System for Teams', accent:'#7b55e7',
+        summary:'A team workspace that connects projects, meetings, tasks, docs and code activity so AI can understand what is happening, surface risks and take approved actions.',
+        build:['Project / task / dependency graph','Realtime comments and presence','Meeting transcription → decisions / actions','Workspace-wide semantic search','Role-based access control','Notifications and deadline engine','GitHub / calendar / email style integrations','Audit log for human + agent actions'],
+        ai:['Plan decomposition from a product brief','Blocker and dependency detection','Weekly project health summary','Action-item extraction from meetings','Duplicate work detection','Agent actions with explicit approval boundaries'],
+        stack:['React','TypeScript','Node.js','MongoDB/Postgres','Redis','WebSockets','Vector Search','Queues','OAuth integrations','LLM APIs'],
+        metrics:[['100k+','workspace objects indexed'],['<1s','semantic result target'],['N tenants','strict data isolation'],['100%','agent actions auditable']],
+        demo:'Give the product a messy launch brief. Let it create the plan. Then introduce a backend delay in chat and show the system identifying downstream risk without manually updating every task.',
+        resume:'Built a multi-tenant AI work operating system that converts unstructured workspace activity into project graphs, detects dependency risk and executes approval-gated agent actions across collaborative workspaces.'
+      },
+      {
+        n:'Project 03', title:'AI-powered Technical Hiring Infrastructure', accent:'#2f63ff',
+        summary:'A live technical interview platform where candidate code runs safely in isolated workers and AI helps the interviewer prepare questions, follow the session and summarize evidence.',
+        build:['Collaborative code editor','Secure code-submission API','Isolated execution workers','CPU / RAM / timeout limits','Public + hidden test cases','Live interviewer / candidate room','Submission history and replay','Structured evaluation rubric'],
+        ai:['JD → assessment blueprint','Adaptive follow-up question suggestions','Complexity / failure explanation for interviewer','Interview notes mapped to rubric','Question generation with human review'],
+        stack:['React','Monaco','TypeScript','Node.js','MongoDB','Redis','BullMQ','Docker','WebSockets','S3','LLM APIs'],
+        metrics:[['1,000','queued submissions stress test'],['0','untrusted code on API server'],['<250ms','live collaboration target'],['N workers','horizontal execution scaling']],
+        demo:'Submit an infinite loop and show the sandbox killing it. Then burst hundreds of submissions into the queue while interviewer and candidate continue collaborating in real time.',
+        resume:'Built a secure technical-assessment platform with isolated code execution, worker queues, real-time collaborative interviews and an AI interviewer copilot that summarizes evidence without autonomously making hiring decisions.'
+      },
+      {
+        n:'Project 04', title:'AI Collaborative Creation Platform', accent:'#ef6b3a',
+        summary:'A shared canvas for docs, diagrams and visual planning that keeps edits in sync even through bad connections, while AI works with the actual canvas objects.',
+        build:['Infinite canvas + structured objects','Multiplayer cursors and presence','Comments and selections','CRDT-based synchronization','Offline edits + reconnection','Version history and snapshots','Permissions / shared spaces','Diagram + document primitives'],
+        ai:['Sticky notes → roadmap','Diagram → architecture explanation','Prompt → new canvas nodes / links','Canvas-wide semantic summary','Structured extraction to implementation tasks'],
+        stack:['React','TypeScript','Canvas/SVG','Yjs/CRDT','Node.js','MongoDB','Redis Pub/Sub','WebSockets','Vector Search','LLM APIs'],
+        metrics:[['3+','clients editing same object'],['offline','edits converge after reconnect'],['<100ms','local-first UI feedback'],['1000s','canvas objects stress test']],
+        demo:'Open the same canvas on three machines. Disconnect one, edit from all three, reconnect and show deterministic convergence. Then ask AI to transform the final board into a roadmap.',
+        resume:'Built a local-first collaborative creation platform using CRDT-based synchronization, offline conflict resolution, multiplayer presence and AI operations over structured canvas objects.'
+      },
+      {
+        n:'Project 05', title:'Financial Infrastructure + AI Risk Engine', accent:'#1e8f5a',
+        summary:'A payment backend built around a double-entry ledger, safe retries and reconciliation, with a separate risk layer that spots unusual transactions without touching ledger correctness.',
+        build:['Double-entry ledger','Transfer state machine','Idempotent payment APIs','Refunds / reversals / payouts','Webhook event processing','Settlement + reconciliation jobs','Immutable audit trail','Manual-review risk queue'],
+        ai:['Transaction anomaly detection','Behavioral risk scoring','Explainable risk reasons','Account / device / velocity patterns','Human review prioritization'],
+        stack:['React','TypeScript','Node.js','PostgreSQL preferred for ledger','Redis','Queues','Webhooks','Python/ML optional','LLM explanation layer'],
+        metrics:[['100%','debits = credits invariant'],['0','duplicate transfers under retry test'],['daily','provider reconciliation'],['p95','payment API latency']],
+        demo:'Complete a transfer, intentionally lose the response, retry with the same idempotency key and prove money moved once. Then show a suspicious transaction entering a human-review queue.',
+        resume:'Built auditable payment infrastructure with a double-entry ledger, idempotent transfer APIs, reconciliation workflows and an explainable risk engine for transaction anomaly detection.'
+      },
+      {
+        n:'Project 06', title:'Secure Intelligent Video Infrastructure', accent:'#137d77',
+        summary:'Video infrastructure for premium content: reliable large uploads, transcoding, adaptive streaming, playback protection and AI search inside long videos.',
+        build:['Multipart / resumable upload','Object-storage ingest','Transcoding job queue','FFmpeg resolution ladder','HLS/DASH packaging','Signed playback authorization','Viewer watermark / device controls','Playback analytics + watch progress'],
+        ai:['Speech-to-text + subtitle generation','Chapters and topic extraction','Timestamped semantic search','Video-grounded Q&A','Suspicious playback pattern summaries'],
+        stack:['React','TypeScript','Node.js','MongoDB','Redis','BullMQ','FFmpeg','S3/Object Storage','CDN','HLS.js','LLM + transcription'],
+        metrics:[['8GB','resume interrupted upload demo'],['4+','renditions per video'],['N workers','transcode scaling'],['<2s','target startup time on CDN']],
+        demo:'Start a huge upload, kill the network, reconnect and resume. Show processing moving through workers, then search “where are closures explained?” and jump directly to the timestamp.',
+        resume:'Built secure video infrastructure with resumable uploads, queued FFmpeg transcoding, adaptive HLS delivery, signed playback and timestamp-grounded AI search across long-form video.'
+      },
+      {
+        n:'Project 07', title:'AI Real-time Dispatch & Operations Engine', accent:'#c6513c',
+        summary:'A real-time allocation engine for moving fleets that combines live location, operational constraints and demand prediction to choose the best assignment.',
+        build:['Live agent location ingestion','Geospatial indexing','Heartbeat / stale-agent detection','Request state machine','Assignment + reassignment','Zone-level capacity monitoring','Realtime operations dashboard','Historical trip / event store'],
+        ai:['ETA prediction','Demand forecasting','Acceptance probability','Risk-aware assignment ranking','Anomaly detection for stale / impossible movement'],
+        stack:['React','TypeScript','Node.js','MongoDB 2dsphere / PostGIS','Redis GEO','WebSockets','Queues','Maps API','ML service optional'],
+        metrics:[['10,000+','simulated moving agents'],['<1s','dispatch decision target'],['4s','median location freshness'],['1000s','requests under burst load']],
+        demo:'Simulate thousands of moving units and a sudden demand spike. Compare nearest-agent assignment with the smarter ranking engine and show why the selected unit wins.',
+        resume:'Built a real-time resource allocation engine for thousands of moving agents using geospatial indexing, WebSocket location streams, demand forecasting and constraint-aware dispatch ranking.'
+      }
+    ];
+
+    const nav = document.getElementById('nav');
+    const slides = [...document.querySelectorAll('.slide')];
+    const progress=document.getElementById('progress');
+    const prevBtn=document.getElementById('prevSlide');
+    const nextBtn=document.getElementById('nextSlide');
+    let current=0;
+
+    slides.forEach((s,i)=>{
+      const b=document.createElement('button');
+      b.className='dot';
+      b.title=`Slide ${i+1}`;
+      b.onclick=()=>goToSlide(i);
+      nav.appendChild(b);
+    });
+    const dots=[...document.querySelectorAll('.dot')];
+
+    function renderSlideState(previous=current){
+      slides.forEach((slide,i)=>{
+        slide.classList.toggle('active',i===current);
+        slide.classList.toggle('exit-left',i<current);
+        if(i===current) slide.scrollTop=0;
+      });
+      dots.forEach((d,i)=>d.classList.toggle('active',i===current));
+      progress.style.width=`${(current/(slides.length-1))*100}%`;
+      prevBtn.disabled=current===0;
+      nextBtn.disabled=current===slides.length-1;
+    }
+
+    function goToSlide(index){
+      const next=Math.max(0,Math.min(index,slides.length-1));
+      if(next===current) return;
+      const previous=current;
+      current=next;
+      renderSlideState(previous);
+    }
+
+    prevBtn.addEventListener('click',()=>goToSlide(current-1));
+    nextBtn.addEventListener('click',()=>goToSlide(current+1));
+    renderSlideState();
+
+    document.addEventListener('keydown',e=>{
+      if(document.getElementById('drawer').classList.contains('open')){if(e.key==='Escape')closeDrawer();return}
+      if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();goToSlide(current+1)}
+      if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();goToSlide(current-1)}
+      if(e.key==='Home'){e.preventDefault();goToSlide(0)}
+      if(e.key==='End'){e.preventDefault();goToSlide(slides.length-1)}
+    });
+
+    // Keep mouse-wheel / trackpad movement from accidentally changing the presentation.
+    window.addEventListener('wheel',e=>{
+      if(!document.getElementById('drawer').classList.contains('open')) e.preventDefault();
+    },{passive:false});
+
+    const drawer=document.getElementById('drawer'), backdrop=document.getElementById('drawerBackdrop'), content=document.getElementById('drawerContent');
+    function openDrawer(i){
+      const p=projects[i]; drawer.style.setProperty('--accent',p.accent);
+      content.innerHTML=`
+        <div class="num">${p.n}</div><h3>${p.title}</h3><div class="summary">${p.summary}</div>
+        <div class="detail-section"><h4>What you actually build</h4><div class="detail-grid">${p.build.map(x=>`<div class="detail-box">${x}</div>`).join('')}</div></div>
+        <div class="detail-section"><h4>Where AI earns its place</h4><ul class="detail-list">${p.ai.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="detail-section"><h4>Suggested stack</h4><div class="stackline">${p.stack.map(x=>`<span>${x}</span>`).join('')}</div></div>
+        <div class="detail-section"><h4>Measure it</h4><div class="benchmark">${p.metrics.map(x=>`<div class="bench"><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div></div>
+        <div class="detail-section"><h4>Killer demo for the video</h4><div class="detail-box" style="font-size:16px">${p.demo}</div></div>
+        <div class="detail-section"><h4>Resume language</h4><div class="resume-line">${p.resume}</div></div>`;
+      drawer.classList.add('open');backdrop.classList.add('open');document.body.style.overflow='hidden';
+    }
+    function closeDrawer(){drawer.classList.remove('open');backdrop.classList.remove('open');document.body.style.overflow='';}
+  </script>
+</body>
+</html>
